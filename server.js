@@ -16,7 +16,8 @@ const app = express()
 app.use(cors({
   origin: [
     'http://localhost:5173',
-    'https://entreskill-client.vercel.app'
+    'https://entreskill-client.vercel.app',
+    /\.vercel\.app$/  // allows all vercel URLs
   ],
   credentials: true
 }))
