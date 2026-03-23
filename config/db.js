@@ -147,6 +147,81 @@ const seedDefaultIdeas = async () => {
   }
 }
 
+const seedDefaultRoadmaps = async () => {
+  try {
+    const { default: Roadmap } = await import('../models/Roadmap.js')
+    const { default: BusinessIdea } = await import('../models/BusinessIdea.js')
+
+    const count = await Roadmap.countDocuments()
+    if (count === 0) {
+      const ideas = await BusinessIdea.find({})
+      const getIdea = (title) => ideas.find(i => i.title === title)?._id
+
+      const bakeryId = getIdea('Home Bakery')
+      const tailoringId = getIdea('Tailoring Studio')
+
+      if (bakeryId) {
+        await Roadmap.create({
+          ideaId: bakeryId,
+          title: 'Home Bakery Launch Roadmap',
+          description: 'Complete guide to starting your home bakery business.',
+          totalDuration: '8-10 weeks',
+          estimatedCost: '₹5,000 - ₹15,000',
+          difficulty: 'beginner',
+          steps: [
+            {
+              stepNumber: 1, title: 'Idea Validation',
+              description: 'Validate your bakery idea by researching the market.',
+              tasks: ['Survey 20 potential customers', 'Research competitors', 'Identify your unique selling point', 'Decide your product range'],
+              tips: ['Start with 3-5 signature items', 'Ask friends and family for honest feedback'],
+              estimatedTime: '1 week'
+            },
+            {
+              stepNumber: 2, title: 'Skills & Equipment',
+              description: 'Identify skills to learn and equipment to buy.',
+              tasks: ['List all required baking equipment', 'Take an online baking course', 'Practice your signature recipes', 'Calculate ingredient costs'],
+              tips: ['Start with basic equipment', 'YouTube has free baking tutorials'],
+              estimatedTime: '2 weeks'
+            },
+            {
+              stepNumber: 3, title: 'Legal & Registration',
+              description: 'Get your business legally registered.',
+              tasks: ['Register as sole proprietor', 'Apply for FSSAI food license', 'Open a business bank account', 'Get GST registration if needed'],
+              tips: ['FSSAI basic registration costs ~₹100/year', 'Udyam registration is free'],
+              estimatedTime: '2 weeks'
+            },
+            {
+              stepNumber: 4, title: 'Cost Estimation',
+              description: 'Calculate your startup and running costs.',
+              tasks: ['List all one-time equipment costs', 'Calculate monthly ingredient budget', 'Set pricing for each product', 'Plan for 3 months of expenses'],
+              tips: ['Price = Cost × 3 for home bakeries', 'Keep a simple expense spreadsheet'],
+              estimatedTime: '1 week'
+            },
+            {
+              stepNumber: 5, title: 'Marketing & Branding',
+              description: 'Create your brand and start marketing.',
+              tasks: ['Choose a business name', 'Create Instagram and WhatsApp Business', 'Take professional photos', 'Get first 10 orders from friends'],
+              tips: ['Instagram Reels get most visibility', 'Offer free samples to food bloggers'],
+              estimatedTime: '1 week'
+            },
+            {
+              stepNumber: 6, title: 'Launch!',
+              description: 'Go live and start taking orders!',
+              tasks: ['Announce launch on social media', 'Set up online payment', 'Create order tracking system', 'Collect customer reviews'],
+              tips: ['Offer launch discount for first 50 customers', 'Always deliver on time'],
+              estimatedTime: '1 week'
+            }
+          ]
+        })
+        console.log('✅ Default roadmaps seeded!')
+      }
+    }
+  } catch (error) {
+    console.error('Roadmap seeding error:', error.message)
+  }
+}
+
+
 const connectDB = async () => {
   try {
     const conn = await mongoose.connect(process.env.MONGO_URI)
@@ -155,6 +230,7 @@ const connectDB = async () => {
     // Auto-setup on first run
     await createDefaultAdmin()
     await seedDefaultIdeas()
+    await seedDefaultRoadmaps() // ← Add this line!
 
   } catch (error) {
     console.error(`❌ MongoDB Error: ${error.message}`)
