@@ -8,6 +8,7 @@ import ideaRoutes from './routes/ideaRoutes.js'
 import adminRoutes from './routes/adminRoutes.js'
 import mentorRoutes from './routes/mentorRoutes.js'
 import roadmapRoutes from './routes/roadmapRoutes.js'
+import resourceRoutes from './routes/resourceRoutes.js'
 
 dotenv.config()
 connectDB()
@@ -36,6 +37,7 @@ app.use('/api/v1/ideas', ideaRoutes)
 app.use('/api/v1/admin', adminRoutes)
 app.use('/api/v1/mentors', mentorRoutes)
 app.use('/api/v1/roadmaps', roadmapRoutes)
+app.use('/api/v1/resources', resourceRoutes)
 
 // Global Error Handler
 app.use((err, req, res, next) => {

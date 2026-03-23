@@ -221,6 +221,91 @@ const seedDefaultRoadmaps = async () => {
   }
 }
 
+const seedDefaultResources = async () => {
+  try {
+    const { default: Resource } = await import('../models/Resource.js')
+    const { default: User } = await import('../models/User.js')
+
+    const count = await Resource.countDocuments()
+    if (count === 0) {
+      const admin = await User.findOne({ role: 'admin' })
+      if (!admin) return
+
+      await Resource.insertMany([
+        {
+          title: 'How to Start a Food Business in India',
+          description: 'Complete guide to starting a food business from home.',
+          type: 'video',
+          url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+          category: 'Food & Beverages',
+          duration: '15 min',
+          tags: ['food', 'startup', 'india'],
+          uploadedBy: admin._id,
+          isApproved: true
+        },
+        {
+          title: 'FSSAI Registration Guide for Home Bakers',
+          description: 'Step by step guide to get your food license.',
+          type: 'article',
+          url: 'https://fssai.gov.in',
+          category: 'Food & Beverages',
+          duration: '5 min read',
+          tags: ['fssai', 'legal', 'food'],
+          uploadedBy: admin._id,
+          isApproved: true
+        },
+        {
+          title: 'Home Bakery Launch Checklist',
+          description: 'Everything you need before launching your bakery.',
+          type: 'checklist',
+          url: '',
+          category: 'Food & Beverages',
+          duration: '10 items',
+          tags: ['bakery', 'checklist', 'launch'],
+          uploadedBy: admin._id,
+          isApproved: true
+        },
+        {
+          title: 'Digital Marketing for Small Businesses',
+          description: 'Learn how to market your business on social media.',
+          type: 'video',
+          url: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+          category: 'General',
+          duration: '20 min',
+          tags: ['marketing', 'social media', 'digital'],
+          uploadedBy: admin._id,
+          isApproved: true
+        },
+        {
+          title: 'Udyam Registration Guide',
+          description: 'How to register your business as MSME for free.',
+          type: 'article',
+          url: 'https://udyamregistration.gov.in',
+          category: 'General',
+          duration: '8 min read',
+          tags: ['msme', 'registration', 'legal'],
+          uploadedBy: admin._id,
+          isApproved: true
+        },
+        {
+          title: 'Pricing Strategy for Home Businesses',
+          description: 'How to price your products for maximum profit.',
+          type: 'article',
+          url: '',
+          category: 'General',
+          duration: '6 min read',
+          tags: ['pricing', 'profit', 'strategy'],
+          uploadedBy: admin._id,
+          isApproved: true
+        },
+      ])
+      console.log('✅ Default resources seeded!')
+    }
+  } catch (error) {
+    console.error('Resource seeding error:', error.message)
+  }
+}
+
 
 const connectDB = async () => {
   try {
@@ -231,7 +316,7 @@ const connectDB = async () => {
     await createDefaultAdmin()
     await seedDefaultIdeas()
     await seedDefaultRoadmaps() // ← Add this line!
-
+    await seedDefaultResources()
   } catch (error) {
     console.error(`❌ MongoDB Error: ${error.message}`)
     process.exit(1)
