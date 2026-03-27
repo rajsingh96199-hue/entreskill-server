@@ -9,6 +9,7 @@ import adminRoutes from './routes/adminRoutes.js'
 import mentorRoutes from './routes/mentorRoutes.js'
 import roadmapRoutes from './routes/roadmapRoutes.js'
 import resourceRoutes from './routes/resourceRoutes.js'
+import reviewRoutes from './routes/reviewRoutes.js'
 
 dotenv.config()
 connectDB()
@@ -38,6 +39,7 @@ app.use('/api/v1/admin', adminRoutes)
 app.use('/api/v1/mentors', mentorRoutes)
 app.use('/api/v1/roadmaps', roadmapRoutes)
 app.use('/api/v1/resources', resourceRoutes)
+app.use('/api/v1/reviews', reviewRoutes)
 
 // Global Error Handler
 app.use((err, req, res, next) => {
